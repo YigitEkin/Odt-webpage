@@ -8129,6 +8129,32 @@ The hyperparameters of the models are as follows:</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Device-Support">Device Support<a class="anchor-link" href="#Device-Support">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="n">device</span> <span class="o">=</span> <span class="s2">"gpu"</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"cpu"</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Training-and-saving-of-the-model.">Training and saving of the model.<a class="anchor-link" href="#Training-and-saving-of-the-model.">¶</a></h2>
 </div>
 </div>
@@ -8168,13 +8194,6 @@ The hyperparameters of the models are as follows:</p>
 <p>Change device to <code>cpu</code>, <code>cuda</code> or do not change if you want to select the best available option</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">pytorch_lightning.strategies</span> <span class="kn">import</span> <span class="n">DDPStrategy</span>
-
-<span class="n">accelerator</span> <span class="o">=</span> <span class="s1">'gpu'</span>
-<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cuda"</span><span class="p">)</span> <span class="k">if</span> <span class="n">accelerator</span><span class="o">==</span><span class="s2">"gpu"</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cpu"</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">accelerator</span> <span class="o">==</span> <span class="s1">'cpu'</span><span class="p">:</span>
-    <span class="n">pl_trainer</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">accelerator</span><span class="o">=</span><span class="n">accelerator</span><span class="p">,</span> <span class="n">log_every_n_steps</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="n">DDPStrategy</span><span class="p">(</span><span class="n">find_unused_parameters</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">devices</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sync_batchnorm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># CHECK sync_batchnorm in this and below part !!!</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">pl_trainer</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">accelerator</span><span class="o">=</span><span class="n">accelerator</span><span class="p">,</span> <span class="n">log_every_n_steps</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="n">DDPStrategy</span><span class="p">(</span><span class="n">find_unused_parameters</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">devices</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">(),</span> <span class="n">sync_batchnorm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># CHECK strategy and find_unused_parameters!!!</span>
 
 <span class="n">train_batch_size</span> <span class="o">=</span> <span class="mi">16</span>
 <span class="n">val_batch_size</span> <span class="o">=</span> <span class="mi">8</span>
@@ -8258,7 +8277,7 @@ The hyperparameters of the models are as follows:</p>
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">CFG</span><span class="o">=</span><span class="s2">"configs/patchgan_sed.py"</span> <span class="c1">#Training of patchgan discriminator with SeD</span>
 
-<span class="o">!</span>python<span class="w"> </span>train.py<span class="w"> </span>--config_file<span class="o">=</span><span class="nv">$CFG</span><span class="w">  </span>#<span class="w"> </span>--resume_from<span class="w"> </span>logs/sed
+<span class="o">!</span>python<span class="w"> </span>train.py<span class="w"> </span>--config_file<span class="o">=</span><span class="nv">$CFG</span><span class="w"> </span>--device<span class="o">=</span>device<span class="w">  </span>#<span class="w"> </span>--resume_from<span class="w"> </span>logs/sed
 </pre></div>
 </div>
 </div>
@@ -8469,7 +8488,7 @@ Epoch 100:  29%|▎| 8/28 [00:06&lt;00:16,  1.20it/s, v_num=0, lpips_test=0.163,
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">CFG</span><span class="o">=</span><span class="s2">"configs/patchgan.py"</span> <span class="c1">#Training of patchgan discriminator without SeD</span>
 
-<span class="o">!</span>python<span class="w"> </span>train.py<span class="w"> </span>--config_file<span class="o">=</span><span class="nv">$CFG</span><span class="w"> </span>#--debug<span class="w"> </span>#<span class="w"> </span>--resume_from<span class="w"> </span>logs/sed
+<span class="o">!</span>python<span class="w"> </span>train.py<span class="w"> </span>--config_file<span class="o">=</span><span class="nv">$CFG</span><span class="w"> </span>--device<span class="o">=</span>device<span class="w"> </span>#--debug<span class="w"> </span>#<span class="w"> </span>--resume_from<span class="w"> </span>logs/sed
 </pre></div>
 </div>
 </div>
@@ -8677,7 +8696,7 @@ Epoch 102:  64%|▋| 18/28 [00:13&lt;00:07,  1.33it/s, v_num=0, lpips_test=0.159
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">CFG</span><span class="o">=</span><span class="s2">"configs/pixelwise_sed.py"</span> <span class="c1">#Training of pixelwise discriminator with SeD</span>
 
-<span class="o">!</span>python<span class="w"> </span>train.py<span class="w"> </span>--config_file<span class="o">=</span><span class="nv">$CFG</span><span class="w"> </span>#--debug<span class="w"> </span>#<span class="w"> </span>--resume_from<span class="w"> </span>logs/sed
+<span class="o">!</span>python<span class="w"> </span>train.py<span class="w"> </span>--config_file<span class="o">=</span><span class="nv">$CFG</span><span class="w"> </span>--device<span class="o">=</span>device<span class="w"> </span>#--debug<span class="w"> </span>#<span class="w"> </span>--resume_from<span class="w"> </span>logs/sed
 </pre></div>
 </div>
 </div>
@@ -8885,7 +8904,7 @@ Epoch 107:   0%| | 0/28 [00:00&lt;?, ?it/s, v_num=0, lpips_test=0.160, VGG_step=
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">CFG</span><span class="o">=</span><span class="s2">"configs/pixelwise.py"</span> <span class="c1">#Training of pixelwise discriminator without SeD</span>
 
-<span class="o">!</span>python<span class="w"> </span>train.py<span class="w"> </span>--config_file<span class="o">=</span><span class="nv">$CFG</span><span class="w"> </span>#--debug<span class="w"> </span>#<span class="w"> </span>--resume_from<span class="w"> </span>logs/sed
+<span class="o">!</span>python<span class="w"> </span>train.py<span class="w"> </span>--config_file<span class="o">=</span><span class="nv">$CFG</span><span class="w"> </span>--device<span class="o">=</span>device<span class="w"> </span>#--debug<span class="w"> </span>#<span class="w"> </span>--resume_from<span class="w"> </span>logs/sed
 </pre></div>
 </div>
 </div>
@@ -9181,15 +9200,13 @@ Epoch 99:  39%|▍| 11/28 [00:09&lt;00:14,  1.17it/s, v_num=0, lpips_test=0.161,
     <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">image</span>
 
-<span class="k">def</span> <span class="nf">generate_results</span><span class="p">(</span><span class="n">ckpt</span><span class="p">,</span> <span class="n">image_dir_hr</span><span class="p">,</span> <span class="n">image_dir_lr</span><span class="p">,</span> <span class="n">save_path</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">generate_results</span><span class="p">(</span><span class="n">ckpt</span><span class="p">,</span> <span class="n">image_dir_hr</span><span class="p">,</span> <span class="n">image_dir_lr</span><span class="p">,</span> <span class="n">save_path</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">SuperResolutionModule</span><span class="o">.</span><span class="n">load_from_checkpoint</span><span class="p">(</span><span class="n">ckpt</span><span class="p">)</span> 
     <span class="n">train_batch_size</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># given so that each image is processed by itself</span>
     <span class="n">val_batch_size</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># given so that each image is processed by itself</span>
     <span class="n">test_batch_size</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># given so that each image is processed by itself</span>
 
     <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-
-    <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"cpu"</span><span class="p">)</span>
     <span class="n">dataset_module</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
         <span class="n">train_batch_size</span><span class="o">=</span><span class="n">train_batch_size</span><span class="p">,</span>
@@ -9250,7 +9267,7 @@ Epoch 99:  39%|▍| 11/28 [00:09&lt;00:14,  1.17it/s, v_num=0, lpips_test=0.161,
 <span class="n">image_path_lr</span> <span class="o">=</span> <span class="s2">"data/evaluation/hr/Set5"</span>
 
 <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">generate_results_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">generate_results</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">image_path_hr</span><span class="p">,</span> <span class="n">image_path_lr</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="n">generate_results</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">image_path_hr</span><span class="p">,</span> <span class="n">image_path_lr</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -9310,7 +9327,7 @@ Calculating FID on SR images: 100%|██████████| 5/5 [00:01&lt
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 <span class="kn">import</span> <span class="nn">cv2</span>
 
-<span class="k">def</span> <span class="nf">print_metrics_given_path</span><span class="p">(</span><span class="n">sr_path</span><span class="p">,</span> <span class="n">gt_path</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">print_metrics_given_path</span><span class="p">(</span><span class="n">sr_path</span><span class="p">,</span> <span class="n">gt_path</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"calculating metrics for "</span> <span class="o">+</span> <span class="n">sr_path</span> <span class="o">+</span> <span class="s2">"and "</span> <span class="o">+</span>  <span class="n">gt_path</span><span class="p">)</span>
     <span class="n">train_batch_size</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># given as temporary data</span>
     <span class="n">val_batch_size</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># given as temporary data</span>
@@ -9318,7 +9335,6 @@ Calculating FID on SR images: 100%|██████████| 5/5 [00:01&lt
     
     
     <span class="c1">################ lpips</span>
-    <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"cpu"</span><span class="p">)</span>
     <span class="n">lpips_model</span> <span class="o">=</span> <span class="n">LPIPS</span><span class="p">(</span><span class="n">net_type</span><span class="o">=</span><span class="s1">'alex'</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'cpu'</span><span class="p">)</span>
     <span class="n">lpips_model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
     <span class="n">image_size</span> <span class="o">=</span> <span class="mi">256</span>
@@ -9481,7 +9497,7 @@ Calculating FID on SR images: 100%|██████████| 5/5 [00:01&lt
         <span class="n">sr_path</span> <span class="o">=</span> <span class="n">dir_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">model</span>
         <span class="n">gt_path</span> <span class="o">=</span> <span class="n">dir_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"/"</span>
         <span class="n">label</span> <span class="o">=</span> <span class="n">dataset</span> <span class="o">+</span> <span class="s2">" using "</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span><span class="s2">""</span><span class="p">)</span>
-        <span class="n">print_metrics_given_path</span><span class="p">(</span><span class="n">sr_path</span><span class="p">,</span> <span class="n">gt_path</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+        <span class="n">print_metrics_given_path</span><span class="p">(</span><span class="n">sr_path</span><span class="p">,</span> <span class="n">gt_path</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
