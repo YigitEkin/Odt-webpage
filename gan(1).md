@@ -50,7 +50,13 @@ The conceptualization of Generative Adversarial Networks (GANs) revolves around 
 
 
 ### Distance Between Distributions
-With density models, we used the Kullback-Leibler divergence \( KL(p_{\text{data}} \parallel p_{\text{model}}) \), leading to the objective \( \mathbb{E}_{x \sim p_{\text{data}}} [\log p_{\theta}(x)] \), where \( p_{\theta}(x) \) is explicitly modeled. However, in the context of GANs, we do not have an explicit form for \( p_{\theta}(x) \). 
+With density models, we used the Kullback-Leibler divergence $\( KL(p_{\text{data}} \parallel p_{\text{model}}) \)$, leading to the objective ![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/5160788d-775a-4a9c-95dd-b4c3a031661b)
+
+ , where $\( p_{\theta}(x) \)$ is explicitly modeled. However, in the context of GANs, we do not have an explicit form for $\( p_{\theta}(x) \)$. 
+
+
+
+
 
 This absence necessitates the use of alternative distance measures that may behave differently from maximum likelihood estimation. Examples of such distance measures include Maximum Mean Discrepancy (MMD), Jensen-Shannon Divergence (JSD), and Earth Mover’s Distance (EMD), among others.
 
@@ -59,7 +65,7 @@ The min-max game is a concept primarily used in game theory, optimization, and m
 
 The min-max game can be mathematically represented as follows:
 
-\[ \min_{G} \max_{D} V(D, G) = \mathbb{E}_{x\sim p_{\text{data}}(x)}[\log D(x)] + \mathbb{E}_{z\sim p_z(z)}[\log(1 - D(G(z)))] \]
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/6536d92b-d7fc-4c24-8bf5-844d298521a5)
 
 Let's break down this equation:
 
@@ -69,87 +75,60 @@ Let's break down this equation:
 
 - \( V(D, G) \) is the value function, representing the performance of the discriminator and the generator. This function is defined as the following objective function, which is to be maximized by \( D \) and minimized by \( G \):
 
-\[ V(D, G) = \mathbb{E}_{x\sim p_{\text{data}}(x)}[\log D(x)] + \mathbb{E}_{z\sim p_z(z)}[\log(1 - D(G(z)))] \]
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/31e96840-719c-46db-a5c9-f9f9f84d2711)
 
-- \( p_{\text{data}}(x) \) represents the distribution of real data samples.
+- $\( p_{\text{data}}(x) \)$ represents the distribution of real data samples.
   
-- \( p_z(z) \) represents the prior distribution of the input noise vector \( z \), usually a simple distribution such as uniform or Gaussian.
+- $\( p_z(z) \)$ represents the prior distribution of the input noise vector \( z \), usually a simple distribution such as uniform or Gaussian.
 
 - \( G(z) \) represents the generated data sample obtained by passing random noise \( z \) through the generator network.
 
-- The first term \( \mathbb{E}_{x\sim p_{\text{data}}(x)}[\log D(x)] \) calculates the expected value of the log-probability that the discriminator assigns to real data samples. The discriminator wants to maximize this value, indicating that it correctly classifies real data as real.
+- The first term ![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/916b2b03-894f-40a5-a75b-c56aea1ef9bf) calculates the expected value of the log-probability that the discriminator assigns to real data samples. The discriminator wants to maximize this value, indicating that it correctly classifies real data as real.
   
-- The second term \( \mathbb{E}_{z\sim p_z(z)}[\log(1 - D(G(z)))] \) calculates the expected value of the log-probability that the discriminator assigns to generated (fake) data samples. The generator wants to minimize this value, indicating that it successfully fools the discriminator into classifying fake data as real.
+- The second term ![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/96f849b4-33f9-4e35-8b79-9e053b6571ef) calculates the expected value of the log-probability that the discriminator assigns to generated (fake) data samples. The generator wants to minimize this value, indicating that it successfully fools the discriminator into classifying fake data as real.
 
 By iteratively updating the parameters of the generator and the discriminator networks using gradient descent/ascent based on this min-max objective, the GAN training process seeks a Nash equilibrium where the generator produces samples that are indistinguishable from real data, and the discriminator cannot reliably differentiate between real and fake samples.
 
 ### Discriminator Update:
 
-The objective for the discriminator \( D \) is to maximize the value function \( V(D, G) \). Therefore, the update rule for the discriminator parameters \( \theta_D \) is obtained by taking the gradient of \( V(D, G) \) with respect to \( \theta_D \).
+The objective for the discriminator \( D \) is to maximize the value function \( V(D, G) \). Therefore, the update rule for the discriminator parameters $\( \theta_D \)$ is obtained by taking the gradient of \( V(D, G) \) with respect to $\( \theta_D \)$.
 
 The update rule for the discriminator involves ascending the gradient of the loss function with respect to its parameters:
 
-\[ \theta_D \leftarrow \theta_D + \eta \nabla_{\theta_D} V(D, G) \]
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/84dc3ec2-b20d-4167-beb7-816b61b5d926)
 
 Where:
-- \( \eta \) is the learning rate.
+- $\( \eta \)$ is the learning rate.
 
-The gradient of \( V(D, G) \) with respect to \( \theta_D \) can be computed as:
+The gradient of \( V(D, G) \) with respect to $\( \theta_D \)$ can be computed as:
 
-\[ \nabla_{\theta_D} V(D, G) = \nabla_{\theta_D} \left( \mathbb{E}_{x\sim p_{\text{data}}(x)}[\log D(x)] + \mathbb{E}_{z\sim p_z(z)}[\log(1 - D(G(z)))] \right) \]
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/58872131-0c68-410e-8023-e31c3a2bf08b)
 
 ### Generator Update:
 
-The objective for the generator \( G \) is to minimize the value function \( V(D, G) \). Therefore, the update rule for the generator parameters \( \theta_G \) is obtained by taking the gradient of \( -V(D, G) \) (since we're minimizing) with respect to \( \theta_G \).
+The objective for the generator \( G \) is to minimize the value function \( V(D, G) \). Therefore, the update rule for the generator parameters $\( \theta_G \)$ is obtained by taking the gradient of \( -V(D, G) \) (since we're minimizing) with respect to $\( \theta_G \)$.
 
 The update rule for the generator involves descending the gradient of the negative loss function with respect to its parameters:
 
-\[ \theta_G \leftarrow \theta_G - \eta \nabla_{\theta_G} (-V(D, G)) \]
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/e6fc976c-8714-407b-a1c7-6ecc0b7ca7ac)
 
 Where:
-- \( \eta \) is the learning rate.
+- $\( \eta \)$ is the learning rate.
 
-The gradient of \( -V(D, G) \) with respect to \( \theta_G \) can be computed as:
+The gradient of \( -V(D, G) \) with respect to $\( \theta_G \)$ can be computed as:
 
-\[ \nabla_{\theta_G} (-V(D, G)) = - \nabla_{\theta_G} V(D, G) \]
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/be6bf821-9e73-40df-8c6e-6fb107b561f3)
 
 
 ### GAN Objective
 
 #### Optimal Bayesian Discriminator 
-The optimal discriminator \( D^*(x) \) is defined as the classifier which perfectly distinguishes between real data samples and generated data samples. It assigns the probability of a sample being real as \( D^*(x) = \frac{p_{\text{data}}(x)}{p_{\text{data}}(x) + p_g(x)} \), where \( p_{\text{data}}(x) \) is the probability density of real data samples and \( p_g(x) \) is the probability density of generated data samples.
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/a921f6f0-1f90-4359-a7c1-e40d47cfb3fc)
 
-$$
-\begin{equation*}
-    \begin{split}
-        V(G, D) &= \mathbb{E}_{x \sim p_{\textrm{data}}} \left[ \log D(x) \right] + \mathbb{E}_{z \sim p(z)} \left[ \log (1 - D(G(z))) \right] \\
-         &= \int_{x} p_{\textrm{data}}(x) \log D(x) \, dx + \int_{z} p(z) \log (1-D(G(z))) \, dz\\
-         &= \int_{x} p_{\textrm{data}}(x) \log D(x) \, dx + \int_{x} p_g(x) \log (1-D(x)) \, dx \\ 
-         &= \int_{x} \left[ p_{\textrm{data}}(x) \log D(x) + p_g(x) \log (1 - D(x)) \right] \, dx 
-    \end{split}
-\end{equation*}
-$$
-
-$y^* = \frac{a}{a+b} \quad \forall [a,b] \in \mathbb{R}^2[0,0] $
-
-\[ D^*(x) = \frac{p_{\text{data}}(x)}{p_{\text{data}}(x) + p_g(x)} \]
 
 #### Insertion of the Optimal Discriminator into GAN MLE Objective 
-Having defined the optimal discriminator \( D^*(x) \), we can now insert it into the GAN MLE objective function. This insertion allows us to express the GAN MLE objective in terms of the Kullback-Leibler Divergence (KLD) and the Jensen-Shannon Divergence (JSD) between the real data distribution \( p_{\text{data}}(x) \) and the generated data distribution \( p_g(x) \).
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/6967e7a2-3020-48ae-9853-42a9dc8dfdd8)
 
-\[ C(G) = \max_D V(G, D) \]
-
-\[ E_{x\sim p_{\text{data}}} [\log D^*(x)] \]
-\[ E_{z\sim p_z} [\log(1 - D^*G(z))] \]
-
-\[ E_{x\sim p_{\text{data}}} \left[ \log \left( \frac{p_{\text{data}}(x)}{p_{\text{data}}(x) + p_g(x)} \right) \right] + E_{x\sim p_g} \left[ \log \left( \frac{p_g(x)}{p_{\text{data}}(x) + p_g(x)} \right) \right] \]
-
-$$E_x[log(a(x))]-log2=E_x[-log 2 + log a(x)]=E_x[log (a(x)/2)]$$
-$$ 
-\color{blue}KL(p_{data}||\frac{p_{data}+p_g}{2})+KL(p_g||\frac{p_{data}+p_g}{2})-2\log2
-$$
-$$
-\color{blue} 2JSD(p_{data}||p_g)+\text{const} $$
 
 Hence, although not defining density explicitly, GANs can be seen as minimizing the Jensen-Shannon Divergence between the real data distribution and the generated data distribution. This approach allows GANs to generate high-quality samples without explicitly estimating the likelihood of the data.
 
@@ -179,31 +158,15 @@ The Jensen-Shannon Divergence (JSD) is a symmetrized and smoothed version of the
 - **Lower Quality Examples:** While KLD promotes mode covering and diversity in the generated samples, it may lead to lower quality examples compared to JSD. This is because the emphasis on covering all modes can sometimes result in the generation of unrealistic or less coherent samples. Since KLD does not prioritize producing samples that closely resemble real data, the generated samples may lack fine details, textures, or overall realism, leading to a perceptual decrease in quality.
 
 
-The Kullback-Leibler Divergence (KLD) between two probability distributions \( p_{\text{data}}(x) \) and \( p_{\text{generated}}(x) \) can be expressed as:
+The Kullback-Leibler Divergence (KLD) between two probability distributions $\( p_{\text{data}}(x) \)$ and $\( p_{\text{generated}}(x) \)$ can be expressed as:
 
-\[ \text{KLD}(p_{\text{data}} \| p_{\text{generated}}) = \int_{-\infty}^{\infty} p_{\text{data}}(x) \log \frac{p_{\text{data}}(x)}{p_{\text{generated}}(x)} \, dx \]
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/0a71fd81-427a-48a8-a787-93a7d9662172)
 
-This formula quantifies the divergence between the probability distribution of real data (\( p_{\text{data}}(x) \)) and the probability distribution of generated data (\( p_{\text{generated}}(x) \)). It measures the average logarithmic difference between the two distributions over all possible values of the random variable \( x \).
+This formula quantifies the divergence between the probability distribution of real data $(\( p_{\text{data}}(x) \))$ and the probability distribution of generated data $(\( p_{\text{generated}}(x) \))$. It measures the average logarithmic difference between the two distributions over all possible values of the random variable $\( x \)$.
 
 
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/75bc7420-588f-43ad-8ac8-81776adb9cb0)
 
-The Jensen-Shannon Divergence (JSD) between two probability distributions \( p_{\text{data}}(x) \) and \( p_{\text{generated}}(x) \) can be explicitly computed as:
-
-\[ \text{JSD}(p_{\text{data}}, p_{\text{generated}}) = \frac{1}{2} \left( \text{KLD}\left(p_{\text{data}} \| M\right) + \text{KLD}\left(p_{\text{generated}} \| M\right) \right) \]
-
-Where \( M \) is the average distribution defined as:
-
-\[ M(x) = \frac{1}{2} \left( p_{\text{data}}(x) + p_{\text{generated}}(x) \right) \]
-
-And \( \text{KLD}(p_{\text{data}} \| p_{\text{generated}}) \) is the Kullback-Leibler Divergence between distributions \( p_{\text{data}} \) and \( p_{\text{generated}} \), which is given by:
-
-\[ \text{KLD}(p_{\text{data}} \| p_{\text{generated}}) = \int_{-\infty}^{\infty} p_{\text{data}}(x) \log \frac{p_{\text{data}}(x)}{p_{\text{generated}}(x)} \, dx \]
-
-or
-
-\[ \text{KLD}(p_{\text{data}} \| p_{\text{generated}}) = \sum_{x} p_{\text{data}}(x) \log \frac{p_{\text{data}}(x)}{p_{\text{generated}}(x)} \]
-
-Where the sum or integral is taken over all possible values of the random variable \( x \).
 
 **KLD:** Heavily penalizes assigning very low density to real data samples
 
@@ -221,33 +184,16 @@ Original Issue: Generator samples confidently classified as fake by the discrimi
 
 **Fix**: Avoid fully training the discriminator (\(D\)) in inner optimization.
 
-\[ 
-\begin{align*}
-L^{(D)}(\theta_{D}, \phi_{G}) &= -\mathbb{E}_{x \sim p_{\textrm{data}}} \left[\log D(x; \theta_D)  \right] - \mathbb{E}_{z \sim p(z)} \left[ \log (1 - D(G(z; \phi_G), \theta_D)) \right] \\
-L^{(G)}(\theta_{D}, \phi_{G}) &= \mathbb{E}_{z \sim p(z)} \left[\log (1 - D(G(z; \phi_G), \theta_D))\right]
-\end{align*}
-\]
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/fe129b5c-629f-488f-9318-b8808e814af5)
 
-\[ 
-\begin{align*}
-\theta &\coloneqq \theta - \alpha^{(D)} \nabla_{\theta} L^{(D)}(\theta_{D}, \phi_{G}) \\
-\phi &\coloneqq \phi - \beta^{(G)} \nabla_{\phi} L^{(G)}(\theta_{D}, \phi_{G})
-\end{align*}
-\]
 
 ##### 2nd Alternative:
 Original Issue: Generator samples confidently classified as fake by the discriminator receive no gradient for the generator update.
 
 **Fix**: Use non-saturating loss for when the discriminator is confident about fake.
 
-\[ 
-\begin{align*}
-L^{(D)} &= -\mathbb{E}_{x \sim p_{\textrm{data}}} \left[\log D(x)  \right] - \mathbb{E}_{z \sim p(z)} \left[ \log (1 - D(G(z))) \right] \\
-L^{(G)} &= - L^D \equiv \min_{G} \mathbb{E}_{z \sim p(z)} \log (1 - D(G(z))) \\
-L^{(D)} &= -\mathbb{E}_{x \sim p_{\textrm{data}}} \left[\log D(x)  \right] - \mathbb{E}_{z \sim p(z)} \left[ \log (1 - D(G(z))) \right]   \\
-L^{(G)} &= -\mathbb{E}_{z \sim p(z)} \log(D(G(z)) \equiv \max_{G} \mathbb{E}_{z \sim p(z)} \log(D(G(z))
-\end{align*}
-\]
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/c721fa4b-227f-42ac-b165-9b5697747ff4)
+
 
 **Interpretation:** Instead of minimizing the probability of being fake, the non-saturating loss aims to maximize the probability of being real. This helps to provide gradients for the generator even when the discriminator is confident about the fakeness of generated samples.
 
@@ -273,15 +219,8 @@ Remarkably, DC-GAN demonstrates the potential for noise arithmetic, enabling the
 **Feature Matching**
 Feature matching in GANs introduces a supplementary loss term based on the feature representations extracted from an intermediate layer ('f') of the discriminator ('D'). Mathematically, this can be expressed as:
 
-\[ L_{\text{FM}} = \mathbb{E}_{x \sim p_{\text{data}}(x)}[||f(x) - f(G(z))||_2^2] \]
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/b80d956e-c2e1-42e7-af7e-e6ecf79affae)
 
-Where:
-- \( L_{\text{FM}} \) represents the feature matching loss.
-- \( x \) denotes a real data sample drawn from the true data distribution \( p_{\text{data}}(x) \).
-- \( G(z) \) denotes the output of the generator network \( G \) given a noise vector \( z \).
-- \( f(x) \) represents the feature representation extracted from the intermediate layer 'f' of the discriminator for the real data sample \( x \).
-- \( f(G(z)) \) represents the feature representation extracted from the same intermediate layer 'f' of the discriminator for the generated sample \( G(z) \).
-- \( || \cdot ||_2^2 \) denotes the squared \( L_2 \) norm, measuring the Euclidean distance between the feature representations.
 
 This loss term encourages the generator to produce samples that not only deceive the discriminator but also match the intermediate feature representations of real data samples, thereby enriching GAN training and promoting stability in the learning process.
 
@@ -301,13 +240,8 @@ In essence, the Minibatch Discriminator serves as a mechanism for the GAN to sel
 **Historical Averaging in D parameters:**
  Historical averaging in discriminator parameters involves maintaining a running average of past parameter values during training. To regulate and prevent rapid, large changes in the discriminator (D) parameters during GAN training, applying smoothing over time is essential. This is typically achieved through methods like historical averaging. By incorporating historical information into parameter updates, this regularization technique helps stabilize training and promotes smoother transitions in the discriminator's parameters over successive iterations. Below equation demonstrates the implementation of the algorithm:
 
-\[ L = ||\theta_t - \bar{\theta}||^2 \]
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/edab74ee-2eb0-41db-87dc-75b34cc749bf)
 
-Where:
-- \( L \) is the regularization loss.
-- \( \theta_t \) represents the current parameters at time \( t \).
-- \( \bar{\theta} \) is the overall historical average of parameters.
-- \( || \cdot ||^2 \) denotes the squared Euclidean norm, measuring the squared difference between the current parameters and the overall historical average.
 
   
 
@@ -345,11 +279,11 @@ The core concept of WGAN involves replacing the discriminator with a critic netw
 WGAN operates on the premise that the dual of the Earth Mover's distance is the supremum of the difference between the expectations of a 1-Lipschitz function across real and generated samples. 
 
 
-\[ W(P, Q) = \inf_{\gamma \in \Pi(P, Q)} \mathbb{E}_{(x, y) \sim \gamma} [||x - y||] \]
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/a183fa55-e4f7-43ab-ad56-d457bf74658b)
 
 Lipschitz continuity is essential for stability and convergence in optimization, including in Generative Adversarial Networks (GANs). Mathematically, a function \( f \) is Lipschitz continuous if its output change is bounded by a constant multiple of its input change, expressed as:
 
-\[ \| f(x) - f(y) \| \leq L \| x - y \| \]
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/c39f63b9-b4d1-47a4-a052-8092a6c59166)
 
 This property ensures that a smooth function exhibits a small change in output for a small change in input. In GANs, particularly in Wasserstein GANs (WGANs), enforcing Lipschitz continuity on the discriminator helps stabilize training. This is achieved by constraining the weights of the discriminator to have a bounded spectral norm, typically through a regularization term:
 
@@ -362,21 +296,22 @@ The Kantorovich-Rubinstein duality plays a fundamental role in the formulation o
 
 The Kantorovich-Rubinstein duality is a concept from optimal transport theory, specifically relating to the formulation of the Wasserstein distance (also known as Earth Mover's distance). This duality establishes a connection between the Wasserstein distance and the supremum (or maximum) of a certain class of functions.
 
-In the context of WGAN, the goal is to approximate the Wasserstein distance between the distribution of real data (say \( P_r \)) and the distribution of generated data (say \( P_g \)). The Wasserstein distance \( W(P_r, P_g) \) is defined as:
+In the context of WGAN, the goal is to approximate the Wasserstein distance between the distribution of real data (say $\( P_r \)$ ) and the distribution of generated data (say $\( P_g \)$ ). The Wasserstein distance $\( W(P_r, P_g) \)$ is defined as:
 
-\[ W(P_r, P_g) = \inf_{\gamma \in \Gamma(P_r, P_g)} \int_{\mathcal{X} \times \mathcal{Y}} c(x, y) \, d\gamma(x, y) \]
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/1d145eae-c008-4163-b860-10eb135d1b0b)
 
-where \( \Gamma(P_r, P_g) \) represents the set of joint distributions whose marginals are \( P_r \) and \( P_g \), and \( c(x, y) \) is a cost function measuring the "distance" between elements \( x \) and \( y \) in the input space.
+where $\( \Gamma(P_r, P_g) \)$ represents the set of joint distributions whose marginals are $\( P_r \)$ and $\( P_g \)$, and $\( c(x, y) \)$ is a cost function measuring the "distance" between elements \( x \) and \( y \) in the input space.
 
-According to Kantorovich-Rubinstein duality, the Wasserstein distance \( W(P_r, P_g) \) can be expressed as:
+According to Kantorovich-Rubinstein duality, the Wasserstein distance $\( W(P_r, P_g) \)$ can be expressed as:
 
-\[ W(P_r, P_g) = \sup_{\| f \|_{\text{Lip}} \leq 1} \mathbb{E}_{x \sim P_r}[f(x)] - \mathbb{E}_{y \sim P_g}[f(y)] \]
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/10f74a9b-7a5b-440f-82f7-2a0be829f9c6)
 
-where \( \| f \|_{\text{Lip}} \leq 1 \) denotes that \( f \) is a 1-Lipschitz function (i.e., the Lipschitz constant of \( f \) is less than or equal to 1). This formulation represents the supremum (maximum) of the difference in expectations of a 1-Lipschitz function \( f \) applied to samples from \( P_r \) and \( P_g \).
+where $\( \| f \|_{\text{Lip}} \leq 1 \)$ denotes that \( f \) is a 1-Lipschitz function (i.e., the Lipschitz constant of \( f \) is less than or equal to 1). This formulation represents the supremum (maximum) of the difference in expectations of a 1-Lipschitz function \( f \) applied to samples from $\( P_r \)$ and $\( P_g \)$.
 
 Intuitively, Lipschitz continuity means that the function \( f \) does not "stretch" distances too much. Specifically, the Lipschitz constant \( L \) provides an upper bound on how much the function value can change relative to changes in the input. If \( L = 0 \), \( f \) is called "locally constant"; otherwise, larger values of \( L \) indicate greater permitted variation in the function's values over its domain.
 
-In WGAN, the discriminator (or critic) network \( f \) is trained to approximate this supremum. During training, the critic's objective is to maximize the difference between \( \mathbb{E}_{x \sim P_r}[f(x)] \) and \( \mathbb{E}_{y \sim P_g}[f(y)] \), which effectively estimates the Wasserstein distance between \( P_r \) and \( P_g \).
+In WGAN, the discriminator (or critic) network \( f \) is trained to approximate this supremum. During training, the critic's objective is to maximize the difference between ![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/5d48d0ac-0bc7-456f-b0ff-4697e7acc176)
+, which effectively estimates the Wasserstein distance between $\( P_r \)$ and $\( P_g \)$.
 
 By leveraging Kantorovich-Rubinstein duality, WGAN provides a principled way to train the discriminator network to estimate the Wasserstein distance, resulting in more stable and meaningful gradients compared to traditional GANs. This theoretical foundation underpins the effectiveness of WGAN in generating high-quality samples and improving training stability.
 ##### How to ensure Lipschitz Continuity:
@@ -387,9 +322,9 @@ In gradient clipping, the goal is to control the magnitude of gradients during t
 
 **Implementation:**
 During training, after computing the gradients of the critic's parameters with respect to its loss, these gradients are clipped to ensure they do not exceed a specified threshold. This is achieved using operations like:
-GANs with gradient clipping aim to prevent exploding gradients by directly limiting the magnitude of the gradients during training. This technique, similar to what was initially used in Wasserstein GANs (WGANs), lacks the theoretical underpinning of the Wasserstein distance. By clipping the gradients of the critic (discriminator) network, denoted as \( \nabla_{\theta} \), to ensure they do not exceed a certain threshold \( c \):
+GANs with gradient clipping aim to prevent exploding gradients by directly limiting the magnitude of the gradients during training. This technique, similar to what was initially used in Wasserstein GANs (WGANs), lacks the theoretical underpinning of the Wasserstein distance. By clipping the gradients of the critic (discriminator) network, denoted as $\( \nabla_{\theta} \)$, to ensure they do not exceed a certain threshold \( c \):
 
-\[ \nabla_{\theta}' = \text{clip}(\nabla_{\theta}, -c, c) \]
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/30039cf5-af5c-43cf-92c3-b91023d6ae5b)
 
 However, this approach is considered suboptimal, as noted by its authors. In contrast, WGAN-GP (WGAN with Gradient Penalty) offers a more sophisticated solution to stabilize training without relying on manual clipping. WGAN-GP extends the WGAN framework by addressing potential issues with weight clipping, which was originally used in WGAN. Instead of clipping weights, which can lead to suboptimal convergence and model behavior, WGAN-GP adds a gradient penalty term to the loss function.
 
@@ -405,11 +340,8 @@ WGAN-GP extends the Wasserstein GAN (WGAN) framework by addressing issues associ
 The gradient penalty term is added to the WGAN loss function and is calculated based on the norm of the gradients of the critic's output with respect to interpolated samples between real and generated data points. The loss function is modified to include this penalty term, encouraging the critic to be 1-Lipschitz without the need for explicit weight clipping.
 
 **Mathematical Formulation:**
-Let \( \hat{x} \) be interpolated samples between real data \( x \) and generated data \( y \). The gradient penalty term \( \text{GP} \) is calculated as:
+![resim](https://github.com/MustafaUtkuAydogdu/topicsumtest/assets/63458049/3d87ccee-ce5a-46c8-8beb-95a68ab7ae20)
 
-\[ \text{GP} = \lambda \cdot \mathbb{E}_{\hat{x}} \left[ \left( \| \nabla_{\hat{x}} f(\hat{x}) \|_2 - 1 \right)^2 \right] \]
-
-where \( f(\hat{x}) \) is the output of the critic network on interpolated samples, \( \lambda \) is a regularization parameter, and \( \| \cdot \|_2 \) denotes the \( L^2 \) norm.
 
 **Relation to Lipschitz Continuity:**
 WGAN-GP tries to enforce a Lipschitz continuity by penalizing deviations of the critic's gradient norm from 1. This penalty helps stabilize the training process and avoids issues associated with manual weight clipping, ensuring that the critic remains Lipschitz continuous throughout training.
@@ -419,12 +351,12 @@ One important point to notice is that both Gradient Clipping and Gradient Penalt
 
 To overcome these issues and ensure 1-Lipschitz continuity with a real constraint, the Spectral Normalization method is suggested. The key idea behind spectral normalization is linking the Lipschitzness of the discriminator to the Lipschitzness and spectral norm of each layer.
 
-The neural network can be represented as a combination of layers \( L_1, L_2, \ldots, L_n \), with weight matrices \( W_1, W_2, \ldots, W_n \). Here, the concept of the singular value of a weight matrix is crucial. The largest singular value of each weight matrix represents the maximum amplification that can be applied to the unit vector that it multiplies. To ensure 1-Lipschitz continuity, the weights of each layer are normalized with respect to the largest singular value. 
+The neural network can be represented as a combination of layers $\( L_1, L_2, \ldots, L_n \)$, with weight matrices $\( W_1, W_2, \ldots, W_n \)$. Here, the concept of the singular value of a weight matrix is crucial. The largest singular value of each weight matrix represents the maximum amplification that can be applied to the unit vector that it multiplies. To ensure 1-Lipschitz continuity, the weights of each layer are normalized with respect to the largest singular value. 
 
 Intuitively, the Lipschitz norm definition measures the smoothness of the layer in terms of the input that yields the Jacobian matrix with the largest singular value. Thus, this normalization provides 1-Lipschitz continuity for a specific layer. Another important property is that in general, with non-linear activations, if the activation function is 1-Lipschitz (e.g., ReLU, LeakyReLU, and many others), the composition of multiple 1-Lipschitz layers also maintains 1-Lipschitz continuity.
 
-\[ W_{\text{normalized}} = \frac{W}{\sigma(W)} \]
-Here, \( \sigma(W) \) represents the spectral norm of the weight matrix \( W \). This normalization ensures that the spectral norm of the normalized weight matrix is 1, effectively constraining the Lipschitz constant of the matrix and stabilizing the training process.
+$\[ W_{\text{normalized}} = \frac{W}{\sigma(W)} \]$
+Here, $\( \sigma(W) \)$ represents the spectral norm of the weight matrix $\( W \)$. This normalization ensures that the spectral norm of the normalized weight matrix is 1, effectively constraining the Lipschitz constant of the matrix and stabilizing the training process.
 
 A thorough analysis reveals the intricate design decisions underlying Spectral GAN, particularly its adept integration of established techniques. Notably, it implements conditional batch normalization in the generator, drawing upon the seminal works of Dumoulin et al. (2017) and de Vries et al. (2017). Simultaneously, the discriminator employs the innovative projection discriminator method pioneered by Miyato and Koyama (2018). 
 
@@ -453,21 +385,21 @@ A self-attention block, also known as a self-attention mechanism or transformer 
    The input embeddings are transformed into three sets of vectors: query (\( Q \)), key (\( K \)), and value (\( V \)) vectors. These transformations are typically achieved using learned linear transformations (i.e., fully connected layers).
 
 3. **Similarity Scores Calculation:**
-   For each query vector \( q_i \), the self-attention block computes a set of similarity scores with all key vectors \( k_j \) using the dot product:
+   For each query vector $\( q_i \)$, the self-attention block computes a set of similarity scores with all key vectors $\( k_j \)$ using the dot product:
 
-   \[ \text{Attention}(q_i, k_j) = \frac{q_i \cdot k_j}{\sqrt{d_k}} \]
+   $\[ \text{Attention}(q_i, k_j) = \frac{q_i \cdot k_j}{\sqrt{d_k}} \]$
 
-   Here, \( d_k \) is the dimensionality of the key vectors.
+   Here, $\( d_k \)$ is the dimensionality of the key vectors.
 
 4. **Softmax and Attention Weights:**
-   The similarity scores are passed through a softmax function to obtain attention weights (\( \alpha_{ij} \)) that represent the importance of each key vector \( k_j \) relative to the query vector \( q_i \):
+   The similarity scores are passed through a softmax function to obtain attention weights $(\( \alpha_{ij} \))$ that represent the importance of each key vector $\( k_j \)$ relative to the query vector $\( q_i \)$:
 
-   \[ \alpha_{ij} = \frac{\exp(\text{Attention}(q_i, k_j))}{\sum_j \exp(\text{Attention}(q_i, k_j))} \]
+   $\[ \alpha_{ij} = \frac{\exp(\text{Attention}(q_i, k_j))}{\sum_j \exp(\text{Attention}(q_i, k_j))} \]$
 
 5. **Weighted Sum of Values:**
-   Finally, the attention weights (\( \alpha_{ij} \)) are used to compute a weighted sum of the corresponding value vectors (\( v_j \)):
+   Finally, the attention weights $(\( \alpha_{ij} \))$ are used to compute a weighted sum of the corresponding value vectors $(\( v_j \))$:
 
-   \[ \text{Output}(q_i) = \sum_j \alpha_{ij} v_j \]
+   $\[ \text{Output}(q_i) = \sum_j \alpha_{ij} v_j \]$
 
    The resulting output represents a refined representation of the input based on the learned attention weights.
 
@@ -483,7 +415,7 @@ A self-attention block, also known as a self-attention mechanism or transformer 
 
 
 
-The Self-Attention GAN (SAGAN) builds upon the Spectral Normalization GAN (SNGAN) framework by integrating self-attention mechanisms into both the generator and discriminator networks. The primary motivation behind introducing self-attention is to capture long-distance dependencies within the model, ensuring consistency across distant parts of generated images. This mechanism can be interpreted as a form of feature representation smoothing, enhancing the coherence and quality of generated samples. In SAGAN, self-attention is implemented using attention coefficients \( \beta_{i,j} \), computed as \( \frac{\exp(s_{ij})}{\sum_j \exp(s_{ij})} \), where \( s_{ij} \) represents the pairwise similarity scores between spatial positions \( i \) and \( j \). The output \( o_{i} \) for each position \( i \) is then computed as a weighted sum of the feature vectors \( h(x_j) \) across all positions \( j \), guided by the attention coefficients.
+The Self-Attention GAN (SAGAN) builds upon the Spectral Normalization GAN (SNGAN) framework by integrating self-attention mechanisms into both the generator and discriminator networks. The primary motivation behind introducing self-attention is to capture long-distance dependencies within the model, ensuring consistency across distant parts of generated images. This mechanism can be interpreted as a form of feature representation smoothing, enhancing the coherence and quality of generated samples. In SAGAN, self-attention is implemented using attention coefficients $\( \beta_{i,j} \)$, computed as $\( \frac{\exp(s_{ij})}{\sum_j \exp(s_{ij})} \)$, where $\( s_{ij} \)$ represents the pairwise similarity scores between spatial positions \( i \) and \( j \). The output $\( o_{i} \)$ for each position \( i \) is then computed as a weighted sum of the feature vectors $\( h(x_j) \)$ across all positions \( j \), guided by the attention coefficients.
 
 Key features of SAGAN include the application of spectral normalization to both the generator and discriminator weight matrices, contrary to the conventional approach of conditioning only the discriminator in WGAN. This approach helps stabilize training and improve the quality of generated samples. Additionally, SAGAN integrates self-attention into both the generator and discriminator networks, enabling the model to effectively capture spatial relationships and dependencies across image regions.
 
@@ -539,21 +471,21 @@ Adaptive Instance Normalization (AdaIN) is a technique used to adjust the style 
 Given:
 - \( x \): Input feature map from the content layer.
 - \( y \): Input feature map from the style layer.
-- \( \mu(x) \): Mean of \( x \).
-- \( \sigma(x) \): Standard deviation of \( x \).
-- \( \mu(y) \): Mean of \( y \).
-- \( \sigma(y) \): Standard deviation of \( y \).
-- \( \alpha \): Style strength parameter.
+- $\( \mu(x) \)$: Mean of \( x \).
+- $\( \sigma(x) \)$: Standard deviation of \( x \).
+- $\( \mu(y) \)$: Mean of \( y \).
+- $\( \sigma(y) \)$: Standard deviation of \( y \).
+- $\( \alpha \)$: Style strength parameter.
 
 The AdaIN operation can be represented as:
 
-\[ \text{AdaIN}(x, y) = \sigma(y) \left( \frac{x - \mu(x)}{\sigma(x)} \right) + \mu(y) \]
+$\[ \text{AdaIN}(x, y) = \sigma(y) \left( \frac{x - \mu(x)}{\sigma(x)} \right) + \mu(y) \]$
 
 Where:
-- \( \frac{x - \mu(x)}{\sigma(x)} \) normalizes the input feature map \( x \) to have zero mean and unit variance.
-- \( \sigma(y) \) scales the normalized feature map to match the standard deviation of the style feature map \( y \).
-- \( \mu(y) \) shifts the scaled feature map to match the mean of the style feature map \( y \).
-- \( \alpha \) controls the strength of the style transfer.
+- $\( \frac{x - \mu(x)}{\sigma(x)} \)$ normalizes the input feature map \( x \) to have zero mean and unit variance.
+- $\( \sigma(y) \)$ scales the normalized feature map to match the standard deviation of the style feature map \( y \).
+- $\( \mu(y) \)$ shifts the scaled feature map to match the mean of the style feature map \( y \).
+- $\( \alpha \)$ controls the strength of the style transfer.
 
 In the context of StyleGAN1, AdaIN is used to inject style information from the intermediate latent space into the generated images, allowing for fine-grained control over various attributes such as color, texture, and structure.
 
