@@ -499,8 +499,7 @@ BigGAN, an advanced variant of Generative Adversarial Networks (GANs), incorpora
 
 To maximize the effectiveness of BigGAN, certain key strategies are recommended. First, increasing the batch size significantly aids in stabilizing training and improving sample quality. Utilizing Cross-Replica (Sync) Batch Normalization across multiple GPUs ensures consistent and synchronized normalization, further enhancing training stability. Additionally, scaling up the model size, both in terms of width and depth, has been shown to yield significant improvements in image generation quality.
 
-![BigGAN](src/biggan.png)
-**Figure 7**: BigGAN Architecture
+You can see the architecture at figure 16 of the [paper](https://arxiv.org/pdf/1809.11096)
 
 Moreover, BigGAN leverages class information integration at all levels of the model, facilitating the generation of diverse and realistic images across different categories. The utilization of Hinge Loss and Self-attention mechanisms further enhances the model's discriminative capabilities and overall performance.
 
