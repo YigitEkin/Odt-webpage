@@ -1,4 +1,5 @@
 Prepared as an activity of the [Middle East Technical University - CENG 796 Deep Generative Models course](<https://user.ceng.metu.edu.tr/~gcinbis/courses/Spring24/CENG796/index.html>).
+
 **GENERATIVE ADVERSERIAL NETWORKS (GANs)**
 
 **CENG796 Deep Generative Models (Spring 2024) Topic Summary**
@@ -204,12 +205,6 @@ or
 
 Where the sum or integral is taken over all possible values of the random variable \( x \).
 
-![KLD vs JSD](images/kl_vs_js.png)
-**Figure 1**: Different Behavior of KLD, Reverse KLD, and JSD
-
-![KLD vs JSD](images/coverage_methods.png)
-**Figure 2**: Different Behavior of KLD, MMD and JSD
-
 **KLD:** Heavily penalizes assigning very low density to real data samples
 
 **Reverse KLD:** Heavily penalizes assigning very low density to generated samples
@@ -256,8 +251,6 @@ L^{(G)} &= -\mathbb{E}_{z \sim p(z)} \log(D(G(z)) \equiv \max_{G} \mathbb{E}_{z 
 
 **Interpretation:** Instead of minimizing the probability of being fake, the non-saturating loss aims to maximize the probability of being real. This helps to provide gradients for the generator even when the discriminator is confident about the fakeness of generated samples.
 
-![GAN Saturation](images/gan_saturation.png)
-**Figure 3**: Behavior of the Discriminator with saturating and non-saturating loss after Sigmoid activation
 
 ### GAN Papers Worth Mentioning Over the Years
 
@@ -269,10 +262,7 @@ At its core, the architecture of DC-GAN revolves around a carefully crafted gene
 
 During training, input images are rescaled to a range of [-1, +1], and the hyperbolic tangent (tanh) function is applied to ensure that the output of the generator network also adheres to this scale.
 
-A pivotal detail in ensuring the stability of the training process lies in the selection of batch normalization statistics for the discriminator (D). It is advantageous to compute separate batch statistics for both synthetic and real examples, a strategy that helps maintain equilibrium and fidelity in the learning dynamics.
-
-![DCGAN](images/dcgan.png)
-**Figure 4**: Architecture of Deep Convolutional GAN (DC-GAN)
+A pivotal detail in ensuring the stability of the training process lies in the selection of batch normalization statistics for the discriminator (D). It is advantageous to compute separate batch statistics for both synthetic and real examples, a strategy that helps maintain equilibrium and fidelity in the learning dynamics. You can see the architecture at Figure 1 of the [paper](https://arxiv.org/pdf/1511.06434)
 
 The guidelines for constructing stable Deep Convolutional GANs are meticulously outlined. Pooling layers in the discriminator are replaced with strided convolutions, offering more flexibility and robustness. In the generator, fractional-strided convolutions, also known as transposed convolutions, are preferred, facilitating smoother upsampling operations. Furthermore, batch normalization is applied to both the generator and discriminator, contributing to the regularization and stability of the training process. Fully connected hidden layers, particularly in deeper architectures, are eliminated to streamline the model's complexity and enhance computational efficiency. Activation functions play a crucial role, with ReLU activation favored for the generator's internal layers, while the output layer employs Tanh. Conversely, LeakyReLU activation is recommended for all layers within the discriminator, promoting better gradient flow and mitigating the risk of vanishing gradients.
 
@@ -424,8 +414,6 @@ where \( f(\hat{x}) \) is the output of the critic network on interpolated sampl
 **Relation to Lipschitz Continuity:**
 WGAN-GP tries to enforce a Lipschitz continuity by penalizing deviations of the critic's gradient norm from 1. This penalty helps stabilize the training process and avoids issues associated with manual weight clipping, ensuring that the critic remains Lipschitz continuous throughout training.
 
-![WGAN-GP](images/wgan.png)
-**Figure 5**: Discriminator of WGAN compared to Vanilla GAN Discriminator
 ##### Spectral Normalization GAN (SNGAN):
 One important point to notice is that both Gradient Clipping and Gradient Penalty are not strict constraints to enforce 1-Lipschitz continuity. Gradient clipping poses challenges because if the threshold is very small, it violates 1-Lipschitz continuity, while if the threshold is very high, training becomes highly unstable until that threshold is reached. Conversely, the Gradient Penalty method serves as a regularization technique, encouraging the network to adhere to the condition as closely as possible, but it does not guarantee strict enforcement.
 
@@ -483,9 +471,6 @@ A self-attention block, also known as a self-attention mechanism or transformer 
 
    The resulting output represents a refined representation of the input based on the learned attention weights.
 
-![Self-Attention Mechanism](images/selfattn.png)
-**Figure 6**: Self-Attention Mechanism in a Transformer Block
-
 ##### Role of Self-Attention in Deep Learning:
 
 - **Capturing Dependencies:** Self-attention allows the model to capture dependencies between different elements of the input data, enabling it to focus on relevant information for the task at hand.
@@ -514,7 +499,7 @@ BigGAN, an advanced variant of Generative Adversarial Networks (GANs), incorpora
 
 To maximize the effectiveness of BigGAN, certain key strategies are recommended. First, increasing the batch size significantly aids in stabilizing training and improving sample quality. Utilizing Cross-Replica (Sync) Batch Normalization across multiple GPUs ensures consistent and synchronized normalization, further enhancing training stability. Additionally, scaling up the model size, both in terms of width and depth, has been shown to yield significant improvements in image generation quality.
 
-![BigGAN](images/biggan.png)
+![BigGAN](src/biggan.png)
 **Figure 7**: BigGAN Architecture
 
 Moreover, BigGAN leverages class information integration at all levels of the model, facilitating the generation of diverse and realistic images across different categories. The utilization of Hinge Loss and Self-attention mechanisms further enhances the model's discriminative capabilities and overall performance.
@@ -528,8 +513,7 @@ In summary, BigGAN employs a holistic approach to GAN training, incorporating te
 
 ##### StyleGAN V1
 
-![StyleGAN1](images/stylegan1.jpeg)
-**Figure 8**: StyleGAN1 Architecture
+You can see the architecture at Figure 1 at the [paper](https://arxiv.org/pdf/1812.04948)
 
 StyleGAN1 stands as a significant breakthrough in the realm of generative adversarial networks (GANs), particularly in the domain of image synthesis. Its innovative techniques have left a notable mark on both artistic expression and scientific exploration. At its essence, StyleGAN1 incorporates progressive growing, a style-based generator, and a mapping network into its architecture. This approach enables the generation of high-resolution images by gradually enhancing detail, starting from lower resolutions. The style-based generator separates the generation process into two components: style and structure, allowing for nuanced control over various image attributes. Furthermore, the mapping network facilitates the manipulation of latent vectors, providing users with the ability to finely adjust the style of generated images. As a result, StyleGAN1 produces high-quality, diverse images with intricate details, making it a versatile tool for creating photorealistic faces, artwork, and more.  The architecture consists of 3 main components, and is as following : 
 
@@ -578,8 +562,7 @@ In the context of StyleGAN1, AdaIN is used to inject style information from the 
 In the context of StyleGAN1, AdaIN Style Injection is applied hierarchically, injecting style information at different stages of the image generation process. This injection of style information occurs at multiple resolutions as the image generation progresses from coarse to fine. Here's how it works in more detail:
 
 **Coarse Style Injection:**
-![Style Injection](images/stylemixing.png)
-**Figure 9:** Style Injection in StyleGAN1
+You can see the effects of this idea at Figure 3 of the [paper](https://arxiv.org/pdf/1812.04948)
 
 - **Global Attributes**: At the initial stages of image generation (e.g., low resolutions), style information is injected to control global attributes of the image, such as overall color tones, broad textures, and large-scale structures.
 - **Low-Resolution Vectors**: The vectors used for injecting style information at this stage capture coarse features of the image. These vectors effect lower-dimensional activations and control broad characteristics of the generated image.
@@ -597,9 +580,6 @@ In the context of StyleGAN1, AdaIN Style Injection is applied hierarchically, in
 - **Customization**: By manipulating style vectors at different stages, users can customize various aspects of the generated images with precision, leading to diverse and highly realistic outputs.
 - **Smooth Transitions**: The hierarchical injection of style information facilitates smooth transitions between different levels of detail, resulting in visually pleasing and coherent images.
 
-![Smooth Transitions](images/interpolation.png)
-**Figure 10:** Smooth Transitions in StyleGAN1
-
 In summary, AdaIN Style Injection in StyleGAN1 enables the representation of different styles across coarse-to-fine stages using different vectors, offering granular control over global, regional, and fine attributes of the generated images.
 
 
@@ -611,13 +591,11 @@ In summary, AdaIN Style Injection in StyleGAN1 enables the representation of dif
 
 ##### StyleGAN2:
 
-![StyleGAN2](images/stylegan2.png)
-**Figure 11**: StyleGAN2 Architecture
+You can see the architecture at Figure 2 of the [paper](https://arxiv.org/pdf/1912.04958) 
 
 In StyleGAN1, a notable issue is the artifacts in images, which are known as the droplet artifacts shown in Figure 12. This artifact manifested as localized spikes or droplets in the generated images, which detracted from the overall quality and realism of the generated outputs. Researchers hypothesized that this artifact occurred due to the generator trying to manipulate signal strength information past instance normalization. By creating strong, localized spikes in certain areas of the image, the generator could effectively scale the signal as desired elsewhere. This behavior was possibly a result of the generator attempting to deceive the discriminator during training by generating peaky values that persisted even after instance normalization, particularly after centering.
 
-![Droplet Artifacts](images/droplet.png)
-**Figure 12**: Droplet Artifacts in StyleGAN1
+You can see examples of droplet artifacts at Figure 1 of the [paper](https://arxiv.org/pdf/1912.04958) 
 
 To address this issue, StyleGAN2 introduced a novel approach by removing Adaptive Instance normalization.
 
@@ -631,8 +609,7 @@ Additionally, empirical observations in StyleGAN2 suggest that centering, which 
 In addition to addressing the droplet artifact problem, StyleGAN2 introduced several other changes. Variance normalization applied to data and data based scaling (modulation) were removed. Instead, scale kernel channels with respect to A and L2 normalization of each kernel were employed. Moreover, rather than operating on feature maps, the kernel values were changed to inject the style, further refining the generation process and improving the quality of the generated images. These modifications collectively contribute to the enhanced performance and stability of StyleGAN2 compared to its predecessor, addressing the droplet artifact issue and advancing the state-of-the-art in image generation.
 
 ##### StyleGAN 3:
-![StyleGAN3](images/stylegan3.png)
-**Figure 13**: StyleGAN3 Architecture
+You can see the architecture at figure 3 of the [paper](https://arxiv.org/pdf/2106.12423).
 
 StyleGAN3 represents a significant advancement over its predecessor, StyleGAN2, by rethinking the underlying signal processing methods within the generator network. In StyleGAN2, certain unintentional positional cues (like image borders, per-pixel noise inputs, and positional encodings) could influence intermediate layers, which in turn affected the generation of image details. StyleGAN3 aims to eliminate these positional references entirely. This overhaul ensures that the network can generate consistent and high-quality details regardless of pixel coordinates, achieving what is described as continuous equivariance to sub-pixel translation and rotation across all layers.
 
